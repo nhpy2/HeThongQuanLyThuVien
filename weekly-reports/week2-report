@@ -1,1 +1,54 @@
+# Báo cáo Tuần 2
+Tuần: 1 (07/03/2026 - 15/03/2026) 
+Nhóm: [2]
+Đề tài:[1] - [Quản lý thư viện]
+Nhóm trưởng: [Nguyễn Hoàng Phương Yến] - [2154050363yen@ou.edu.vn]
+---
+## 1. Công việc đã hoàn thành
 
+| Thành viên | MSSV | Công việc | Link Commit/PR |
+|------------|------|-----------|----------------|
+| Trần Ngọc Tường Vy|  2151050570 | Tạo repository GitHub, setup project Spring Boot| ...  |
+| Nguyễn Hoàng Phương Yến| 2154050363| Phân tích yêu cầu hệ thống, viết use cases | ... |
+| Nguyễn Trường Khang | 2251010046 | Thiết kế wireframes cho các màn hình chính | ... |
+
+---
+
+## 2. Tiến độ tổng thể
+
+| Hạng mục | Trạng thái | % |
+|----------|------------|---|
+| Chọn đề tài | Done | 100% |
+| Phân tích yêu cầu | Done | 100% |
+| Wireframes | Đang làm | 20% |
+| Backend | Chưa bắt đầu | 0% |
+| Frontend | Chưa bắt đầu | 0% |
+
+**Tổng tiến độ: 10%**
+
+---
+
+## 3. Kế hoạch tuần tới
+
+| Thành viên | Công việc dự kiến |
+|------------|-------------------|
+| Trần Ngọc Tường Vy | 
+- Tạo: AuthController, AuthService, JwtService
+- API: post /auth/register, post /auth/login, get /auth/profile|
+| Nguyễn Hoàng Phương Yến | - Thiết kế entity: user, book, author, category, publisher
+- Tạo repository: UserRepository, BookRepository, AuthorRepository, CategoryRepository, PublisherRepository |
+| Nguyễn Trường Khang| - Vẽ ERD
+- Tạo entity: BorrowRecords, Resercation, Fine
+- Setup JPA relationship (viết class)|
+
+---
+
+## 4. Khó khăn / Cần hỗ trợ
+
+- Nhóm đang trong giai đoạn làm quen với Spring Boot và kiến trúc hệ thống
+- Cần thêm thời gian để hoàn thiện thiết kế database và ERD
+
+---
+
+*Ngày nộp: 15/03/2026*  
+*Xác nhận của Nhóm trưởng: Nguyễn Hoàng Phương Yến
