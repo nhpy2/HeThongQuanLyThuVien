@@ -1,1 +1,49 @@
+# Báo cáo Tuần 3
+Tuần: 3 (15/03/2026 - 22/03/2026) 
+Nhóm: [2]
+Đề tài:[1] - [Quản lý thư viện]
+Nhóm trưởng: [Nguyễn Hoàng Phương Yến] - [2154050363yen@ou.edu.vn]
+---
+## 1. Công việc đã hoàn thành
+
+| Thành viên | MSSV | Công việc | Link Commit/PR |
+|------------|------|-----------|----------------|
+| Trần Ngọc Tường Vy|  2151050570 | Nghiên cứu Spring Security, JWT và chuẩn bị cấu trúc cho module Authentication |
+| Nguyễn Hoàng Phương Yến| 2154050363| Phân tích và thiết kế các entity chính (User, Book, Author, Category, Publisher)| ... |
+| Nguyễn Trường Khang | 2251010046 | Thiết kế sơ đồ ERD và xác định quan hệ giữa các bảng| ... |
+
+---
+
+## 2. Tiến độ tổng thể
+
+| Hạng mục | Trạng thái | % |
+|----------|------------|---|
+| Chọn đề tài | Done | 100% |
+| Phân tích yêu cầu | Done | 100% |
+| Wireframes | Đang làm | 20% |
+| Backend | Chưa bắt đầu | 0% |
+| Frontend | Chưa bắt đầu | 0% |
+
+**Tổng tiến độ: 25%**
+
+---
+
+## 3. Kế hoạch tuần tới
+
+| Thành viên | Công việc dự kiến |
+|------------|-------------------|
+| Trần Ngọc Tường Vy | Triển khai module Authentication (AuthController, AuthService, JwtService)|
+| Nguyễn Hoàng Phương Yến | Hoàn thiện entity và repository|
+| Nguyễn Trường Khang| Hoàn thiện ERD và thiết lập quan hệ JPA |
+
+---
+
+## 4. Khó khăn / Cần hỗ trợ
+
+- Nhóm đang trong quá trình làm quen với Spring Boot và kiến trúc hệ thống
+- Một số khái niệm như JWT, JPA relationship còn mới
+---
+
+*Ngày nộp: 21/03/2026*  
+*Xác nhận của Nhóm trưởng: Nguyễn Hoàng Phương Yến
 
