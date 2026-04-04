@@ -1,1 +1,60 @@
+# Báo cáo Tuần 5
+Tuần: 5 (29/03/2026 - 05/04/2026) 
+Nhóm: [2]
+Đề tài:[1] - [Quản lý thư viện]
+Nhóm trưởng: [Nguyễn Hoàng Phương Yến] - [2154050363yen@ou.edu.vn]
+---
+## 1. Công việc đã hoàn thành
 
+| Thành viên | MSSV | Công việc | Link Commit/PR |
+|------------|------|-----------|----------------|
+| Trần Ngọc Tường Vy|  2151050570 | - Borrow module: BorrowController, BorrowService
+- API: post /borrow, post /return, get /borrow/my, get /borrow/history |
+| Nguyễn Hoàng Phương Yến| 2154050363| - Reservation module: ReservationController, ReservationService
+- API: post /reservations, get /reservations/my, delete /reservations/{id}| ... |
+| Nguyễn Trường Khang | 2251010046 | - Fine module: FineService, FineController
+- Bổ sung logic: Tính tiền phạt khi trễ hẹn.
+- API: get /fines/my, post /fines/pay| ... |
+
+---
+
+## 2. Tiến độ tổng thể
+
+| Hạng mục | Trạng thái | % |
+|----------|------------|---|
+| Chọn đề tài | Done | 100% |
+| Phân tích yêu cầu | Done | 100% |
+| Wireframes | Đang làm | 20% |
+| Backend | đang làm| 55% |
+| Frontend | Chưa bắt đầu | 0% |
+
+**Tổng tiến độ: 45%**
+
+---
+
+## 3. Kế hoạch tuần tới
+
+| Thành viên | Công việc dự kiến |
+|------------|-------------------|
+| Trần Ngọc Tường Vy | - Trang Authentication: trang login và register
+- Kết nối API: /auth/login, /auth/register
+- Thêm:
+AuthContext: Quản lý trạng thái đăng nhập được đồng bộ toàn ứng dụng.
+JWT trong localStorage: Duy trì đăng nhập ngay cả khi reload trang hoặc đóng/mở web|
+| Nguyễn Hoàng Phương Yến | - Trang Books: trang danh sách sách, trang chi tiết sách và search.
+- Kết nối API: get /books, get /books/{id}
+- Thêm:
+BookCard: Thẻ hiển thị thông tin cơ bản của sách
+Pagination: Phân trang|
+| Nguyễn Trường Khang| - Fine module: FineService, FineController
+- Bổ sung logic: Tính tiền phạt khi trễ hẹn.
+- API: get /fines/my, post /fines/pay |
+
+---
+
+## 4. Khó khăn / Cần hỗ trợ
+
+
+
+*Ngày nộp: 04/04/2026*  
+*Xác nhận của Nhóm trưởng: Nguyễn Hoàng Phương Yến
