@@ -1,1 +1,50 @@
+# Báo cáo Tuần 4
+Tuần: 4 (22/03/2026 - 29/03/2026) 
+Nhóm: [2]
+Đề tài:[1] - [Quản lý thư viện]
+Nhóm trưởng: [Nguyễn Hoàng Phương Yến] - [2154050363yen@ou.edu.vn]
+---
+## 1. Công việc đã hoàn thành
 
+| Thành viên | MSSV | Công việc | Link Commit/PR |
+|------------|------|-----------|----------------|
+| Trần Ngọc Tường Vy|  2151050570 | Triển khai module Authentication (AuthController, AuthService, JwtService) |
+| Nguyễn Hoàng Phương Yến| 2154050363| Hoàn thiện entity và repository| ... |
+| Nguyễn Trường Khang | 2251010046 | Hoàn thiện ERD và thiết lập quan hệ JPA| ... |
+
+---
+
+## 2. Tiến độ tổng thể
+
+| Hạng mục | Trạng thái | % |
+|----------|------------|---|
+| Chọn đề tài | Done | 100% |
+| Phân tích yêu cầu | Done | 100% |
+| Wireframes | Đang làm | 20% |
+| Backend | Chưa bắt đầu | 50% |
+| Frontend | Chưa bắt đầu | 0% |
+
+**Tổng tiến độ: 40%**
+
+---
+
+## 3. Kế hoạch tuần tới
+
+| Thành viên | Công việc dự kiến |
+|------------|-------------------|
+| Trần Ngọc Tường Vy | - Borrow module: BorrowController, BorrowService
+- API: post /borrow, post /return, get /borrow/my, get /borrow/history|
+| Nguyễn Hoàng Phương Yến | - Reservation module: ReservationController, ReservationService
+- API: post /reservations, get /reservations/my, delete /reservations/{id}|
+| Nguyễn Trường Khang| - Fine module: FineService, FineController
+- Bổ sung logic: Tính tiền phạt khi trễ hẹn.
+- API: get /fines/my, post /fines/pay |
+
+---
+
+## 4. Khó khăn / Cần hỗ trợ
+
+---
+
+*Ngày nộp: 28/03/2026*  
+*Xác nhận của Nhóm trưởng: Nguyễn Hoàng Phương Yến
