@@ -14,7 +14,7 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 
-
+//mapping vs bảng User: lưu ttin user, dùng trong jpa/hibernate để crud
 @Entity
 @Table(name="users", indexes={
     @Index(name="idx_users_username",columnList="username", unique=true),

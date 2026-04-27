@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import com.example.LibraryManagement.dto.UserResponse;
 import com.example.LibraryManagement.entity.User;
 
+//chuyển User entiry thành UserResponse dto -> trả về client an toàn
 @Component
 public class UserMapper {
     public UserResponse toResponse(User user) {

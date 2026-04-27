@@ -1,5 +1,7 @@
 package com.example.LibraryManagement.dto;
 
+//trả POST /api/auth/login
+//token gọi api, ttin user, thgian hết hạn
 public record AuthResponse(
     String accessToken,
     String refreshToken,

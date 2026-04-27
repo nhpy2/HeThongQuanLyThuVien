@@ -9,15 +9,33 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-@Configuration
+
+//cấu hình bảo mật cho toàn bộ ứng dụng
+@Configuration //kích hoạt SpringSecurity
 @EnableWebSecurity
 public class SecurityConfig {
+    private final JwtAuthFilter jwtAuthFilter;
+
+    public SecurityConfig(JwtAuthFilter jwtAuthFilter){
+        this.jwtAuthFilter = jwtAuthFilter;
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll()) 
-        .csrf(csrf -> csrf.disable())
-        .headers(headers -> headers.frameOptions(f -> f.sameOrigin())); //H2 console chạy trên iframe
+        http.csrf(csrf -> csrf.disable())
+            .cors(cors -> {})
+            .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/api/auth/**","/h2-console/**").permitAll()
+            .requestMatchers("/api/admin/**").hasRole("ADMIN")
+            .anyRequest().authenticated()
+        )
+        .headers(headers -> headers.frameOptions(f -> f.sameOrigin()))
+        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+        // .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()) //tất cả api đều truy cập
+        // 
+        // 
 
         return http.build();
     }

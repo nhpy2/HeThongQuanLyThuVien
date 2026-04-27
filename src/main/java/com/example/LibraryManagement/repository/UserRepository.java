@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.example.LibraryManagement.entity.User;
 
+//repository xử lý toàn bộ truy vấn lquan đến User
 public interface UserRepository extends JpaRepository<User,Long>{
     Optional<User> findByUsername(String username);
 

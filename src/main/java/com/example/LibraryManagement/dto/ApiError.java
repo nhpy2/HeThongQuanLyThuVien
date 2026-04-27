@@ -5,11 +5,12 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+//chuẩn hóa format lỗi trả về từ api
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record ApiError(
     String error,
     String message,
-    List<FeildErrorDetails> details,
+    List<FieldErrorDetail> details,
     String path,
     Instant timestamp
 ) {

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.LibraryManagement.repository.UserRepository;
 
+//lấu ttin user từ db để xác thực
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService{
 

@@ -15,6 +15,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
+
+//xử lý toàn bộ JWT: tạo-đọc-ktra token
 @Service
 public class JwtService {
     private final JwtProperties jwtProperties;

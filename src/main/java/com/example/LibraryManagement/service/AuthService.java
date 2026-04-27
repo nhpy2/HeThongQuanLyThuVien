@@ -3,10 +3,15 @@ package com.example.LibraryManagement.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.LibraryManagement.Config.JwtProperties;
+import com.example.LibraryManagement.dto.AuthResponse;
+import com.example.LibraryManagement.dto.LoginRequest;
 import com.example.LibraryManagement.dto.RegisterRequest;
 import com.example.LibraryManagement.dto.UserResponse;
 import com.example.LibraryManagement.entity.Role;
@@ -15,7 +20,7 @@ import com.example.LibraryManagement.exception.DuplicateResourceException;
 import com.example.LibraryManagement.repository.UserRepository;
 import com.example.LibraryManagement.security.JwtService;
 
-
+//register user:ktra->mã hóa->lưu db -> trả dto
 @Service
 public class AuthService {
 
@@ -27,6 +32,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
     private final UserMapper userMapper;
+    private final JwtProperties jwtProperties;
      
     public AuthService (
         UserRepository userRepository,
@@ -34,7 +40,8 @@ public class AuthService {
         JwtService jwtService,
         AuthenticationManager authenticationManager,
         UserDetailsService userDetailsService,
-        UserMapper userMapper
+        UserMapper userMapper,
+        JwtProperties jwtProperties
     ){
         this.userRepository=userRepository;
         this.passwordEncoder=passwordEncoder;
@@ -42,7 +49,7 @@ public class AuthService {
         this.authenticationManager=authenticationManager;
         this.userDetailsService=userDetailsService;
         this.userMapper=userMapper;
-        
+        this.jwtProperties=jwtProperties;
         
     }
 
@@ -64,6 +71,41 @@ public class AuthService {
         
         user = userRepository.save(user);
         log.info("User Registered: {}", user.getFullName());
+        return userMapper.toResponse(user);
+    }
+
+    public AuthResponse login(LoginRequest request) {
+        try {
+        Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(
+                request.usernameOrEmail(),
+                request.password()
+            )
+        );
+
+        var userDetails = userDetailsService.loadUserByUsername(request.usernameOrEmail());
+
+        String accessToken = jwtService.generateAccessToken(userDetails);
+        String refreshToken = jwtService.generateRefreshToken(userDetails);
+
+        var user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow();
+
+        return AuthResponse.of(
+            accessToken,
+            refreshToken,
+            "Bearer",
+            jwtProperties.getAccessTokenExpirationMS() / 1000,
+            userMapper.toResponse(user));
+        } 
+        catch (Exception e) {
+            throw new RuntimeException("Invalid username/email or password");
+        }
+    }
+
+    public UserResponse getProfile(String username) {
+        var user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
         return userMapper.toResponse(user);
     }
 

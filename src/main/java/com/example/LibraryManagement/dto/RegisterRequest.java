@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+//nhận dl register + validate khi xử lý
 public record RegisterRequest(
     @NotBlank(message = "Username không được trống")
     @Size(min=3, max=50)
