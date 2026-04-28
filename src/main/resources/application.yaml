@@ -4,7 +4,7 @@ spring:
 
   datasource:
     # Đảm bảo tên database khớp với lệnh CREATE DATABASE ở trên
-    url: jdbc:mysql://localhost:3306/librarymanagement_db?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/librarymanagement_db?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: root
