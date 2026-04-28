@@ -4,39 +4,33 @@ import { useState } from "react";
 import { useAuth } from "@/src/context/AuthContext";
 import { useRouter } from "next/navigation";
 
+export const API_URL = "http://localhost:8090/api";
 export default function LoginPage() {
   const [form, setForm] = useState({
     usernameOrEmail: "",
-    password: ""
+    password: "",
   });
 
   const { loginUser } = useAuth();
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    try {
-      const res = await fetch("http://localhost:8090/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
 
-      if (!res.ok) {
-        alert(`Login failed: ${res.status}`);
-        return;
-      }
+    const res = await fetch(`${API_URL}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    });
 
-      const data = await res.json();
+    const data = await res.json();
 
-      if (data.accessToken) {
-        loginUser(data);
-        router.push("/"); // chuyển về trang chính
-      } else {
-        alert("Login failed: no token");
-      }
-    } catch (err: any) {
-      alert("Error: " + err.message);
+    if (data.accessToken) {
+      loginUser(data);
+      localStorage.setItem("token", data.accessToken);
+      router.push("/profile");
+    } else {
+      alert("Login failed");
     }
   };
 
@@ -48,7 +42,6 @@ export default function LoginPage() {
         <input
           placeholder="Username or Email"
           className="border p-2 mb-2 w-full"
-          value={form.usernameOrEmail}
           onChange={(e) =>
             setForm({ ...form, usernameOrEmail: e.target.value })
           }
@@ -58,7 +51,6 @@ export default function LoginPage() {
           type="password"
           placeholder="Password"
           className="border p-2 mb-2 w-full"
-          value={form.password}
           onChange={(e) =>
             setForm({ ...form, password: e.target.value })
           }
@@ -67,6 +59,23 @@ export default function LoginPage() {
         <button className="bg-blue-500 text-white p-2 w-full">
           Login
         </button>
+
+        <p className="mt-3 text-sm">
+          Chưa có tài khoản?{" "}
+          <span
+            className="text-blue-500 cursor-pointer"
+            onClick={() => router.push("/register")}
+          >
+            Đăng ký
+          </span>
+        </p>
+
+        <p
+          className="text-red-500 cursor-pointer text-sm mt-2"
+          onClick={() => router.push("/forgot-pass")}
+        >
+          Quên mật khẩu?
+        </p>
       </form>
     </div>
   );

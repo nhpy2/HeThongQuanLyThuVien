@@ -3,29 +3,18 @@ export const API_URL = "http://localhost:8090/api";
 export async function login(data: any) {
   const res = await fetch(`${API_URL}/auth/login`, {
     method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    usernameOrEmail: "vy",
-    password: "123"
-  })
-});
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data), //dùng data thật
+  });
 
-  console.log("status:", res.status);
-
-  // Nếu server trả về lỗi (403, 404, 500...)
   if (!res.ok) {
     const errorText = await res.text();
-    console.error("Error response:", errorText);
-    throw new Error(`Login failed: ${res.status}`);
+    throw new Error(errorText);
   }
 
-  // Parse JSON trực tiếp
-  const json = await res.json();
-  console.log("response JSON:", json);
-
-  return json;
+  return res.json();
 }
 
 export async function register(data: any) {
@@ -43,4 +32,29 @@ export async function register(data: any) {
 
   const json = await res.json();
   return json;
+}
+
+export async function changePassword(data: any, token: string) {
+  const res = await fetch(`${API_URL}/auth/reset-pass`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+  return res.text();
+}
+
+export async function forgotPassword(data: any) {
+  const res = await fetch(`${API_URL}/auth/forgot-pass`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  return res.text();
 }

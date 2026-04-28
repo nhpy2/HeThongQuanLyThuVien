@@ -3,7 +3,6 @@ package com.example.LibraryManagement.Controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.LibraryManagement.dto.AuthResponse;
+import com.example.LibraryManagement.dto.ForgotPasswordRequest;
 import com.example.LibraryManagement.dto.LoginRequest;
 import com.example.LibraryManagement.dto.RegisterRequest;
+import com.example.LibraryManagement.dto.ResetPasswordRequest;
 import com.example.LibraryManagement.dto.UserResponse;
 import com.example.LibraryManagement.service.AuthService;
 import jakarta.validation.Valid;
@@ -20,7 +21,6 @@ import jakarta.validation.Valid;
 //Xử lý api lquan đến register/login
 @RestController //trả về JSON: sping tự convert obj -> JSON
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "http://localhost:3000")
 public class AuthController {
     //dependency injection: ko xử lý logic, nhận request, trả response
     private final AuthService authService;
@@ -47,5 +47,26 @@ public class AuthController {
         UserResponse user = authService.getProfile(username);
 
         return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/forgot-pass")
+    public ResponseEntity<?> forgotPassword(
+        @RequestBody ForgotPasswordRequest request
+    ) {
+        authService.forgotPassword(request);
+
+        return ResponseEntity.ok("Password reset successfully");
+    }
+
+    @PostMapping("/reset-pass")
+    public ResponseEntity<?> changePassword(
+        Authentication authentication,
+        @RequestBody ResetPasswordRequest request
+    ) {
+        String username = authentication.getName();
+
+        authService.resetPassword(username, request);
+
+        return ResponseEntity.ok("Password changed");
     }
 }
