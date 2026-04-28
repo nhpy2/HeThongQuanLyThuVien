@@ -1,5 +1,7 @@
 package com.example.LibraryManagement.service;
 
+import java.time.Instant;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,8 +13,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.LibraryManagement.Config.JwtProperties;
 import com.example.LibraryManagement.dto.AuthResponse;
+import com.example.LibraryManagement.dto.ForgotPasswordRequest;
 import com.example.LibraryManagement.dto.LoginRequest;
 import com.example.LibraryManagement.dto.RegisterRequest;
+import com.example.LibraryManagement.dto.ResetPasswordRequest;
 import com.example.LibraryManagement.dto.UserResponse;
 import com.example.LibraryManagement.entity.Role;
 import com.example.LibraryManagement.entity.User;
@@ -107,6 +111,33 @@ public class AuthService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         return userMapper.toResponse(user);
+    }
+
+    //quên password
+    public void forgotPassword(ForgotPasswordRequest request) {
+        User user = userRepository.findByUsername(request.usernameOrEmail())
+            .orElseGet(() -> userRepository.findByEmail(request.usernameOrEmail())
+            .orElseThrow(() -> new RuntimeException("User not found")));
+
+        user.setPasswordHash(passwordEncoder.encode(request.newPassword()));
+
+        userRepository.save(user);
+    }
+
+    //reset pass, đã login
+    public void resetPassword(String username, ResetPasswordRequest request) {
+        User user = userRepository.findByUsername(username)
+        .orElseThrow(() -> new RuntimeException("User not found"));
+
+        //kiểm tra password cũ
+        if (!passwordEncoder.matches(request.oldPassword(), user.getPasswordHash())) {
+            throw new RuntimeException("Old password is incorrect");
+        }
+
+        //set password mới
+        user.setPasswordHash(passwordEncoder.encode(request.newPassword()));
+
+        userRepository.save(user);
     }
 
 }

@@ -46,6 +46,12 @@ public class User {
     @Column(name="updated_at")
     private Instant updatedAt;
 
+    @Column(name = "reset_token")
+    private String resetToken;
+
+    @Column(name = "reset_token_expiry")
+    private Instant resetTokenExpiry;
+
     @PrePersist
     protected void onCreate(){
         createdAt = Instant.now();
@@ -123,6 +129,22 @@ public class User {
 
     public static UserBuilder builder(){
         return new UserBuilder();
+    }
+
+    public String getResetToken() {
+    return resetToken;
+    }
+
+    public void setResetToken(String resetToken) {
+        this.resetToken = resetToken;
+    }
+
+    public Instant getResetTokenExpiry() {
+        return resetTokenExpiry;
+    }
+
+    public void setResetTokenExpiry(Instant resetTokenExpiry) {
+        this.resetTokenExpiry = resetTokenExpiry;
     }
 
     public static final class UserBuilder{

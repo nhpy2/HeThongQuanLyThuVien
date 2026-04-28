@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { register } from "@/src/lib/api";
 import { useRouter } from "next/navigation";
 
+export const API_URL = "http://localhost:8090/api";
 export default function RegisterPage() {
   const [form, setForm] = useState({
     username: "",
     email: "",
-    password: ""
+    password: "",
   });
 
   const router = useRouter();
@@ -16,13 +16,18 @@ export default function RegisterPage() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    const res = await register(form);
+    const res = await fetch(`${API_URL}/auth/register`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(form),
+    });
 
-    if (res.id) {
-      alert("Register success");
+    if (res.ok) {
+      alert("Đăng ký thành công!");
       router.push("/login");
     } else {
-      alert("Register failed");
+      const err = await res.text();
+      alert(err);
     }
   };
 
