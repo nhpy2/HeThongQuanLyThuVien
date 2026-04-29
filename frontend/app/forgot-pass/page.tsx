@@ -1,50 +1,54 @@
 "use client";
 
 import { useState } from "react";
-import { forgotPassword } from "@/src/lib/api";
 import { useRouter } from "next/navigation";
 
-export default function ForgotPasswordPage() {
+const API_URL = "http://localhost:8090/api";
+
+export default function ForgotPassword() {
+  const router = useRouter();
+
   const [form, setForm] = useState({
     usernameOrEmail: "",
-    newPassword: ""
+    newPassword: "",
+    confirmPassword: "",
   });
 
-  const router = useRouter();
-  
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    const res = await forgotPassword(form);
-    alert(res);
+  const handleSubmit = async () => {
+    await fetch(`${API_URL}/auth/forgot-pass`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    });
+
+    alert("Password changed");
     router.push("/login");
   };
 
   return (
-    <div className="flex h-screen justify-center items-center">
-      <form onSubmit={handleSubmit} className="p-6 border rounded w-80">
-        <h2>Forgot Password</h2>
+    <div className="flex h-screen items-center justify-center">
+      <div className="bg-white p-6 shadow w-96">
+        <h2 className="text-xl mb-4">Reset Password</h2>
 
-        <input
-          placeholder="Username or Email"
-          className="border p-2 mb-2 w-full"
-          onChange={(e) =>
-            setForm({ ...form, usernameOrEmail: e.target.value })
-          }
-        />
+        {Object.keys(form).map((key) => (
+          <input
+            key={key}
+            placeholder={key}
+            type="password"
+            className="border p-2 mb-2 w-full"
+            onChange={(e) =>
+              setForm({ ...form, [key]: e.target.value })
+            }
+          />
+        ))}
 
-        <input
-          type="password"
-          placeholder="New Password"
-          className="border p-2 mb-2 w-full"
-          onChange={(e) =>
-            setForm({ ...form, newPassword: e.target.value })
-          }
-        />
-
-        <button className="bg-blue-500 text-white p-2 w-full">
-          Reset
+        <button
+          onClick={handleSubmit}
+          className="bg-blue-500 text-white w-full p-2"
+        >
+          Submit
         </button>
-      </form>
+      </div>
     </div>
   );
 }

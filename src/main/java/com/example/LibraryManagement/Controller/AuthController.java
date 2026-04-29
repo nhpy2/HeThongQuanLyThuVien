@@ -18,8 +18,8 @@ import com.example.LibraryManagement.dto.UserResponse;
 import com.example.LibraryManagement.service.AuthService;
 import jakarta.validation.Valid;
 
-//Xử lý api lquan đến register/login
-@RestController //trả về JSON: sping tự convert obj -> JSON
+//nhanaj reuqest từ frontend
+@RestController
 @RequestMapping("/api/auth")
 public class AuthController {
     //dependency injection: ko xử lý logic, nhận request, trả response
@@ -49,7 +49,7 @@ public class AuthController {
         return ResponseEntity.ok(user);
     }
 
-    @PostMapping("/forgot-pass")
+    @PostMapping("/forgot-pass") //reset khi chưa login
     public ResponseEntity<?> forgotPassword(
         @RequestBody ForgotPasswordRequest request
     ) {
@@ -58,7 +58,7 @@ public class AuthController {
         return ResponseEntity.ok("Password reset successfully");
     }
 
-    @PostMapping("/reset-pass")
+    @PostMapping("/reset-pass") //reset khi đã login
     public ResponseEntity<?> changePassword(
         Authentication authentication,
         @RequestBody ResetPasswordRequest request

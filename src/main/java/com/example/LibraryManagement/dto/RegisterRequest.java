@@ -16,7 +16,15 @@ public record RegisterRequest(
 
     @NotBlank(message = "Password không được trống")
     @Size(min=8,message="Tối thiểu 8 ký tự")
-    String password
+    String password,
+
+    @NotBlank(message = "Nhập đúng password da95 nhập")
+    @Size(min=8,message="Tối thiểu 8 ký tự")
+    String confirmPassword,
+
+    @NotBlank(message = "Fullname không được trống")
+    @Email(message="Email không hợp lệ")
+    String fullName
 ) {
 
 }

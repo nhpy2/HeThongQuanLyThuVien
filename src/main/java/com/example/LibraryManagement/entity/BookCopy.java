@@ -14,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
+//đại diện cho 1 cuốn sách (cái user mượn)
 @Entity
 public class BookCopy {
     @Id @GeneratedValue(strategy = IDENTITY)

@@ -1,82 +1,76 @@
 "use client";
 
 import { useState } from "react";
-import { useAuth } from "@/src/context/AuthContext";
 import { useRouter } from "next/navigation";
 
-export const API_URL = "http://localhost:8090/api";
-export default function LoginPage() {
-  const [form, setForm] = useState({
-    usernameOrEmail: "",
-    password: "",
-  });
+const API_URL = "http://localhost:8090/api";
 
-  const { loginUser } = useAuth();
+export default function LoginPage() {
   const router = useRouter();
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
+  const [usernameOrEmail, setUser] = useState("");
+  const [password, setPass] = useState("");
+  const [error, setError] = useState("");
 
-    const res = await fetch(`${API_URL}/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
+  const handleLogin = async () => {
+    try {
+      const res = await fetch(`${API_URL}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ usernameOrEmail, password }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (data.accessToken) {
-      loginUser(data);
+      if (!res.ok) throw new Error(data.message || "Login failed");
+
       localStorage.setItem("token", data.accessToken);
       router.push("/profile");
-    } else {
-      alert("Login failed");
+    } catch (e: any) {
+      setError(e.message);
     }
   };
 
   return (
-    <div className="flex h-screen justify-center items-center">
-      <form onSubmit={handleSubmit} className="p-6 border rounded w-80">
-        <h2 className="text-xl mb-4">Login</h2>
+    <div className="h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-8 rounded shadow w-96">
+        <h1 className="text-2xl font-bold mb-4 text-center">Login</h1>
 
         <input
           placeholder="Username or Email"
-          className="border p-2 mb-2 w-full"
-          onChange={(e) =>
-            setForm({ ...form, usernameOrEmail: e.target.value })
-          }
+          className="border p-2 w-full mb-2"
+          onChange={(e) => setUser(e.target.value)}
         />
 
         <input
           type="password"
           placeholder="Password"
-          className="border p-2 mb-2 w-full"
-          onChange={(e) =>
-            setForm({ ...form, password: e.target.value })
-          }
+          className="border p-2 w-full mb-2"
+          onChange={(e) => setPass(e.target.value)}
         />
 
-        <button className="bg-blue-500 text-white p-2 w-full">
+        {error && <p className="text-red-500">{error}</p>}
+
+        <button
+          onClick={handleLogin}
+          className="bg-blue-500 text-white w-full p-2 mt-2 rounded">
           Login
         </button>
 
-        <p className="mt-3 text-sm">
-          Chưa có tài khoản?{" "}
+        <div className="flex justify-between mt-3 text-sm">
           <span
             className="text-blue-500 cursor-pointer"
-            onClick={() => router.push("/register")}
-          >
-            Đăng ký
+            onClick={() => router.push("/register")}>
+            Register
           </span>
-        </p>
 
-        <p
-          className="text-red-500 cursor-pointer text-sm mt-2"
-          onClick={() => router.push("/forgot-pass")}
-        >
-          Quên mật khẩu?
-        </p>
-      </form>
+          <span
+            className="text-blue-500 cursor-pointer"
+            onClick={() => router.push("/forgot-password")}>
+            Forgot password?
+          </span>
+        </div>
+      </div>
     </div>
   );
 }

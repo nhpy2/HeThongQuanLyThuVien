@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.LibraryManagement.repository.UserRepository;
 
-//lấu ttin user từ db để xác thực
+//lấy ttin user từ db để xác thực
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService{
 
@@ -30,7 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
             throw new UsernameNotFoundException("User not found: "+username);
 
         }
-        return new User(
+        return new User( //convert sang format SpringSecurity
             user.getUsername(),
             user.getPasswordHash(),
             Collections.singletonList(new SimpleGrantedAuthority("ROLE_"+user.getRole().name()))

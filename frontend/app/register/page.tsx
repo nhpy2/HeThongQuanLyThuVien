@@ -3,68 +3,67 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export const API_URL = "http://localhost:8090/api";
+const API_URL = "http://localhost:8090/api";
+
 export default function RegisterPage() {
+  const router = useRouter();
+
   const [form, setForm] = useState({
     username: "",
     email: "",
+    fullName: "",
     password: "",
+    confirmPassword: "",
   });
 
-  const router = useRouter();
+  const [error, setError] = useState("");
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
+  const handleRegister = async () => {
+    try {
+      const res = await fetch(`${API_URL}/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
 
-    const res = await fetch(`${API_URL}/auth/register`, {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(form),
-    });
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text);
+      }
 
-    if (res.ok) {
-      alert("Đăng ký thành công!");
+      alert("Register success");
       router.push("/login");
-    } else {
-      const err = await res.text();
-      alert(err);
+    } catch (e: any) {
+      setError(e.message);
     }
   };
 
   return (
-    <div className="flex h-screen justify-center items-center">
-      <form onSubmit={handleSubmit} className="p-6 border rounded w-80">
-        <h2 className="text-xl mb-4">Register</h2>
+    <div className="h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-8 rounded shadow w-96">
+        <h1 className="text-xl font-bold mb-4">Register</h1>
 
-        <input
-          placeholder="Username"
-          className="border p-2 mb-2 w-full"
-          onChange={(e) =>
-            setForm({ ...form, username: e.target.value })
-          }
-        />
+        {Object.keys(form).map((key) => (
+          <input
+            key={key}
+            type={key.includes("password") ? "password" : "text"}
+            placeholder={key}
+            className="border p-2 w-full mb-2"
+            onChange={(e) =>
+              setForm({ ...form, [key]: e.target.value })
+            }
+          />
+        ))}
 
-        <input
-          placeholder="Email"
-          className="border p-2 mb-2 w-full"
-          onChange={(e) =>
-            setForm({ ...form, email: e.target.value })
-          }
-        />
+        {error && <p className="text-red-500">{error}</p>}
 
-        <input
-          type="password"
-          placeholder="Password"
-          className="border p-2 mb-2 w-full"
-          onChange={(e) =>
-            setForm({ ...form, password: e.target.value })
-          }
-        />
-
-        <button className="bg-green-500 text-white p-2 w-full">
+        <button
+          onClick={handleRegister}
+          className="bg-green-500 text-white w-full p-2"
+        >
           Register
         </button>
-      </form>
+      </div>
     </div>
   );
 }

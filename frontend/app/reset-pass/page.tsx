@@ -16,7 +16,7 @@ export default function ProfilePage() {
 
   //load profile
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
+    const token = localStorage.getItem("token");
 
     if (!token) {
       alert("Bạn chưa đăng nhập");
@@ -42,20 +42,20 @@ export default function ProfilePage() {
       .catch((err) => {
         console.error("Profile error:", err);
         alert("Token hết hạn hoặc không hợp lệ");
-        localStorage.removeItem("accessToken");
+        localStorage.removeItem("token");
         router.push("/login");
       });
   }, [router]);
 
   //logout
   const handleLogout = () => {
-    localStorage.removeItem("accessToken");
+    localStorage.removeItem("token");
     router.push("/login");
   };
 
   //rreset pass
   const handleChangePassword = async () => {
-    const token = localStorage.getItem("accessToken");
+    const token = localStorage.getItem("token");
 
     if (!oldPassword || !newPassword) {
       alert("Vui lòng nhập đầy đủ");

@@ -28,20 +28,21 @@ public class SecurityConfig {
         this.corsConfigurationSource = corsConfigurationSource;
     }
 
-    @Bean
+    @Bean //cấu hình security
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
-            .cors(cors -> cors.configurationSource(corsConfigurationSource))
+        http.csrf(csrf -> csrf.disable()) //tắt vì dùng jwt
+            .cors(cors -> cors.configurationSource(corsConfigurationSource)) //cho frontend gọi api
             .authorizeHttpRequests(auth -> auth
-            .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-            .requestMatchers("/api/auth/**","/h2-console/**").permitAll()
-            .requestMatchers("/api/admin/**").hasRole("ADMIN")
+            .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() 
+            .requestMatchers("/api/auth/**","/h2-console/**").permitAll() //api-auth ko cần token
+            .requestMatchers(HttpMethod.GET, "/api/books/**").permitAll() //user xem sách
+            .requestMatchers(HttpMethod.POST, "/api/books/**").hasRole("ADMIN") //admin thêm sách
+            .requestMatchers("/api/admin/**").hasRole("ADMIN") //chỉ admin mới gọi đc
             .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
-            .anyRequest().permitAll()
+            .anyRequest().permitAll() //api còn lại phỉa có token
         )
         .headers(headers -> headers.frameOptions(f -> f.sameOrigin()))
-        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-        // .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()) //tất cả api đều truy cập
+        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); //check token mỗi request
 
         return http.build();
     }

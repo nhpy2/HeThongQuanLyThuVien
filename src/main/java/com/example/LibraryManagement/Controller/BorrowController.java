@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.LibraryManagement.dto.BorrowRecordDTO;
 import com.example.LibraryManagement.service.BorrowService;
 
+//Xử lý: mượn sách -> xem sách đang mượn -> trả sách
 @RestController
 @RequestMapping("/api/borrow")
 public class BorrowController {
@@ -23,6 +24,7 @@ public class BorrowController {
         this.borrowService = borrowService;
     }
 
+    //mượn sách
     @PostMapping("/{bookId}")
     public ResponseEntity<String> borrowBook(@PathVariable Long bookId) {
         // Lấy username từ token JWT đã được xác thực qua SecurityContext
@@ -36,6 +38,7 @@ public class BorrowController {
         }
     }
 
+    //ds sách user đang mượn
     @GetMapping("/my")
     public ResponseEntity<List<BorrowRecordDTO>> getMyBorrowedBooks() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -43,6 +46,7 @@ public class BorrowController {
         return ResponseEntity.ok(myBooks);
     }
 
+    //trả sách
     @PostMapping("/return/{recordId}")
     public ResponseEntity<String> returnBook(@PathVariable Long recordId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();

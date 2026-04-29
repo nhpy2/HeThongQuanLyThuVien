@@ -44,6 +44,8 @@ public class JwtAuthFilter extends OncePerRequestFilter{
                         String username = jwtService.extractUsername(jwt);
                         if(username!=null){
                             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                               
+                            //ktra token hợp lệ
                             if(jwtService.validateToken(jwt, userDetails)) {
                                 UsernamePasswordAuthenticationToken authentication = 
                                     new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

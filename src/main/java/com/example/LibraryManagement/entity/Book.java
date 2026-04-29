@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
+//đại diện cho đầu sách 
 @Entity
 public class Book {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +18,7 @@ public class Book {
     private String author;
     private String isbn;
     
+    //1 đầu sách có n bản 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     private List<BookCopy> copies;
 

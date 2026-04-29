@@ -9,6 +9,7 @@ import com.example.LibraryManagement.dto.ApiError;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+//xử lý lỗi toàn hệ thống
 public class GlobalExceptionHandler {
     @ExceptionHandler(DuplicateResourceException.class)
     public ResponseEntity<ApiError> handleDuplicate(DuplicateResourceException ex, HttpServletRequest request) {
