@@ -1,8 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
 package com.example.LibraryManagement.entity;
 
 import jakarta.persistence.Entity;
@@ -25,7 +20,7 @@ public class BookCopy {
     private Book book;
     
     @Enumerated(EnumType.STRING)
-    private BookStatus status; // Trạng thái: AVAILABLE, BORROWED...
+    private BookStatus status; // Trạng thái: AVAILABLE, BORROWED
 
     public Long getId() {
         return id;

@@ -1,11 +1,12 @@
 package com.example.LibraryManagement.dto;
 
-//tránh trả entity trực tiếp
+//tránh trả DL sách entity trực tiếp
 public record BookDTO(
     Long id,
     String title,
     String author,
-    String isbn
+    String isbn,
+    int availableQuantity
 ) {
 
 }

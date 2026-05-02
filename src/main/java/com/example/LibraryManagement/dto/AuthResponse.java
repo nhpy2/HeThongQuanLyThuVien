@@ -4,12 +4,12 @@ package com.example.LibraryManagement.dto;
 //token gọi api, ttin user, thgian hết hạn
 public record AuthResponse(
     String accessToken,
-    String refreshToken,
+    String refreshToken, //lấy accessToken mới khi hêt hạn, ko gọi trực tiếp api
     String tokenType,
     Long expiresInSeconds,
     UserResponse user
 ) {
-    public AuthResponse{
+    public AuthResponse{ //tokenType = NUll -> tự set Bearer
         if(tokenType==null||tokenType.isBlank()) {
             tokenType="Bearer";
         }

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.LibraryManagement.dto.AuthResponse;
@@ -18,7 +19,7 @@ import com.example.LibraryManagement.dto.UserResponse;
 import com.example.LibraryManagement.service.AuthService;
 import jakarta.validation.Valid;
 
-//nhanaj reuqest từ frontend
+//xác thực và qly user
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -30,7 +31,20 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> register(@Valid @RequestBody RegisterRequest request) {
+    public ResponseEntity<?> register(
+            @Valid @RequestBody RegisterRequest request,
+            org.springframework.validation.BindingResult result
+    ) {
+
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body(
+                result.getFieldErrors()
+                    .stream()
+                    .map(e -> e.getField() + ": " + e.getDefaultMessage())
+                    .toList()
+            );
+        }
+
         UserResponse created = authService.register(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }

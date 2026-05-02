@@ -23,7 +23,7 @@ public record RegisterRequest(
     String confirmPassword,
 
     @NotBlank(message = "Fullname không được trống")
-    @Email(message="Email không hợp lệ")
+    @Size(max=250)
     String fullName
 ) {
 

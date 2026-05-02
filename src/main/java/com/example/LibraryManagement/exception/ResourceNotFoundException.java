@@ -1,7 +1,7 @@
 package com.example.LibraryManagement.exception;
 
 
-//Ko tìm thấy resource(user,...) trả về lỗi 404
+//Ko tìm thấy DL(user,...) trả về lỗi 404
 public class ResourceNotFoundException extends RuntimeException{
     public ResourceNotFoundException(String message){
         super(message);

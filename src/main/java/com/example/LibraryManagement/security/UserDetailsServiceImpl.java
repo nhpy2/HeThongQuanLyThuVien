@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.LibraryManagement.repository.UserRepository;
 
+//cầu nối DB vs SpringSecurity
 //lấy ttin user từ db để xác thực
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService{

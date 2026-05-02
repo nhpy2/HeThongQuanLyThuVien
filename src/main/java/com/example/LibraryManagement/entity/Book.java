@@ -7,20 +7,33 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 //đại diện cho đầu sách 
 @Entity
 public class Book {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    private String author;
+    private String auth;
     private String isbn;
+    private int availableQuantity; //số lượng sách có thể mượn
     
     //1 đầu sách có n bản 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
-    private List<BookCopy> copies;
+    @ManyToOne
+    private Author author;
+
+    @ManyToOne
+    private Category category;
+
+    @ManyToOne
+    private Publisher publisher;
+    
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    private List<BookCopy> Copies;
 
     public Book() {
     }
@@ -34,11 +47,11 @@ public class Book {
     }
 
     public String getAuthor() {
-        return author;
+        return auth;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setAuthor(String auth) {
+        this.auth = auth;
     }
 
     public String getIsbn() {
@@ -55,6 +68,14 @@ public class Book {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public int getAvailableQuantity() {
+    return availableQuantity;
+    }
+
+    public void setAvailableQuantity(int availableQuantity) {
+        this.availableQuantity = availableQuantity;
     }
 
 }

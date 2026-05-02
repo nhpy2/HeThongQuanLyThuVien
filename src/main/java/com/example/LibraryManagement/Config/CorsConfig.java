@@ -6,18 +6,22 @@ import org.springframework.web.cors.*;
 
 import java.util.List;
 
+//cấu hình spring cho phép frontend gọi api
 @Configuration
 public class CorsConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowCredentials(true);
+        //dùng * cho allowedOrigins, kấy token/cookie
+        config.setAllowCredentials(true); 
         config.setAllowedOrigins(List.of("http://localhost:3000"));
         config.setAllowedHeaders(List.of("*"));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        //lấy request
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); 
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        //cho toàn bộ api
         source.registerCorsConfiguration("/**", config);
 
         return source;

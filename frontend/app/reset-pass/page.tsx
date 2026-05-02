@@ -11,10 +11,11 @@ export default function ProfilePage() {
 
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const router = useRouter();
 
-  //load profile
+  // load profile
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -47,17 +48,18 @@ export default function ProfilePage() {
       });
   }, [router]);
 
-  //logout
+  // logout
   const handleLogout = () => {
     localStorage.removeItem("token");
     router.push("/login");
   };
 
-  //rreset pass
+  // reset pass
   const handleChangePassword = async () => {
     const token = localStorage.getItem("token");
 
-    if (!oldPassword || !newPassword) {
+    // ✅ validate
+    if (!oldPassword || !newPassword || !confirmPassword) {
       alert("Vui lòng nhập đầy đủ");
       return;
     }
@@ -67,20 +69,24 @@ export default function ProfilePage() {
       return;
     }
 
+    if (newPassword !== confirmPassword) {
+      alert("Mật khẩu xác nhận không khớp");
+      return;
+    }
+
     try {
-      const res = await fetch(`${API_URL}/auth/reset-pass`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            oldPassword,
-            newPassword,
-          }),
-        }
-      );
+      const res = await fetch(`${API_URL}/auth/reset-pass`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          oldPassword,
+          newPassword,
+          confirmPassword, // ✅ FIX QUAN TRỌNG
+        }),
+      });
 
       const text = await res.text();
 
@@ -90,13 +96,16 @@ export default function ProfilePage() {
       }
 
       alert("Đổi mật khẩu thành công");
-      router.push("/login");
 
+      // reset state
       setOldPassword("");
       setNewPassword("");
+      setConfirmPassword("");
 
-      localStorage.removeItem("accessToken");
+      // logout lại cho an toàn
+      localStorage.removeItem("token"); // ✅ FIX
       router.push("/login");
+
     } catch (err: any) {
       alert(err.message);
     }
@@ -145,17 +154,9 @@ export default function ProfilePage() {
         <div className="bg-white p-6 rounded shadow w-96">
           <h2 className="text-xl mb-4">User Info</h2>
 
-          <p>
-            <strong>Username:</strong> {user.username}
-          </p>
-
-          <p>
-            <strong>Email:</strong> {user.email}
-          </p>
-
-          <p>
-            <strong>Role:</strong> {user.role}
-          </p>
+          <p><strong>Username:</strong> {user.username}</p>
+          <p><strong>Email:</strong> {user.email}</p>
+          <p><strong>Role:</strong> {user.role}</p>
         </div>
       )}
 
@@ -178,6 +179,14 @@ export default function ProfilePage() {
             className="border p-2 mb-2 w-full"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
+          />
+
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            className="border p-2 mb-2 w-full"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
           />
 
           <button

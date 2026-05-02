@@ -1,5 +1,4 @@
 "use client";
-
 import { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext<any>(null);
@@ -8,22 +7,23 @@ export function AuthProvider({ children }: any) {
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    const stored = localStorage.getItem("auth");
-    if (stored) setUser(JSON.parse(stored));
+    const data = localStorage.getItem("user");
+    if (data) setUser(JSON.parse(data));
   }, []);
 
-  const loginUser = (data: any) => {
-    localStorage.setItem("auth", JSON.stringify(data));
+  const login = (data: any) => {
+    localStorage.setItem("user", JSON.stringify(data));
+    localStorage.setItem("token", data.token);
     setUser(data);
   };
 
   const logout = () => {
-    localStorage.removeItem("auth");
+    localStorage.clear();
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, loginUser, logout }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

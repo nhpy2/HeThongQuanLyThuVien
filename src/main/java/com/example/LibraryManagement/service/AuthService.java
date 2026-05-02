@@ -22,8 +22,7 @@ import com.example.LibraryManagement.exception.DuplicateResourceException;
 import com.example.LibraryManagement.repository.UserRepository;
 import com.example.LibraryManagement.security.JwtService;
 
-//xử lý logic
-//register user:ktra->mã hóa->lưu db -> trả dto
+//xử lý logic:: kiểm soát user, phát token
 @Service
 public class AuthService {
 
@@ -128,8 +127,8 @@ public class AuthService {
             .orElseGet(() -> userRepository.findByEmail(request.usernameOrEmail())
             .orElseThrow(() -> new RuntimeException("User not found")));
 
-        if (!request.newPassword().equals(request.confirmPassword())) {
-            throw new RuntimeException("Password không khớp");
+        if (!passwordEncoder.matches(request.newPassword(), user.getPasswordHash())) {
+            throw new RuntimeException("Invalid username/email or password");
         }
 
         user.setPasswordHash(passwordEncoder.encode(request.newPassword()));

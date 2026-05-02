@@ -1,9 +1,16 @@
+
 const API_URL = "http://localhost:8090/api";
 
-export async function getBooks(token: string) {
-  const res = await fetch(`${API_URL}/books`);
+export async function getBooks(keyword = "", page = 0) {
+  const res = await fetch(
+    `${API_URL}/books?keyword=${keyword}&page=${page}&size=6`
+  );
 
-  if (!res.ok) throw new Error("Failed to fetch books");
+  if (!res.ok) {
+    const text = await res.text();
+    console.error("ERROR:", res.status, text);
+    throw new Error("Failed");
+  }
 
   return res.json();
 }

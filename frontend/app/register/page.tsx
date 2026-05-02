@@ -17,8 +17,28 @@ export default function RegisterPage() {
   });
 
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleRegister = async () => {
+    setError("");
+
+    // ✅ validate
+    if (
+      !form.username ||
+      !form.email ||
+      !form.fullName ||
+      !form.password ||
+      !form.confirmPassword
+    ) {
+      setError("Vui lòng nhập đầy đủ thông tin");
+      return;
+    }
+
+    if (form.password !== form.confirmPassword) {
+      setError("Mật khẩu xác nhận không khớp");
+      return;
+    }
+
     try {
       const res = await fetch(`${API_URL}/auth/register`, {
         method: "POST",
@@ -46,8 +66,24 @@ export default function RegisterPage() {
         {Object.keys(form).map((key) => (
           <input
             key={key}
-            type={key.includes("password") ? "password" : "text"}
-            placeholder={key}
+            type={
+              key.toLowerCase().includes("password")
+                ? showPassword
+                  ? "text"
+                  : "password"
+                : "text"
+            }
+            placeholder={
+              key === "username"
+                ? "Username"
+                : key === "email"
+                ? "Email"
+                : key === "fullName"
+                ? "Full Name"
+                : key === "password"
+                ? "Password"
+                : "Confirm Password"
+            }
             className="border p-2 w-full mb-2"
             onChange={(e) =>
               setForm({ ...form, [key]: e.target.value })
@@ -55,7 +91,20 @@ export default function RegisterPage() {
           />
         ))}
 
-        {error && <p className="text-red-500">{error}</p>}
+        {/* 👁️ toggle password */}
+        <div className="mb-3">
+          <label className="text-sm">
+            <input
+              type="checkbox"
+              checked={showPassword}
+              onChange={() => setShowPassword(!showPassword)}
+              className="mr-2"
+            />
+            Hiển thị mật khẩu
+          </label>
+        </div>
+
+        {error && <p className="text-red-500 mb-2">{error}</p>}
 
         <button
           onClick={handleRegister}

@@ -28,7 +28,8 @@ public class BorrowController {
     @PostMapping("/{bookId}")
     public ResponseEntity<String> borrowBook(@PathVariable Long bookId) {
         // Lấy username từ token JWT đã được xác thực qua SecurityContext
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String username = SecurityContextHolder
+            .getContext().getAuthentication().getName();
 
         try {
             borrowService.borrowBook(bookId, username);
@@ -56,5 +57,27 @@ public class BorrowController {
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    // @PostMapping("/pay/{recordId}")
+    // public ResponseEntity<String> payFine(@PathVariable Long recordId) {
+
+    //     String username = SecurityContextHolder
+    //             .getContext().getAuthentication().getName();
+
+    //     borrowService.payFine(recordId, username);
+
+    //     return ResponseEntity.ok("Thanh toán thành công");
+    // }
+
+    @GetMapping("/history")
+    public ResponseEntity<List<BorrowRecordDTO>> history() {
+
+        String username = SecurityContextHolder.getContext()
+                .getAuthentication().getName();
+
+        return ResponseEntity.ok(
+            borrowService.getMyBorrowHistory(username)
+        );
     }
 }

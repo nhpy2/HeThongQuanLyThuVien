@@ -34,6 +34,10 @@ export const metadata: Metadata = {
 
 import { AuthProvider } from "@/src/context/AuthContext";
 
+import Navbar from "@/components/navbar";
+
+<Navbar />
+
 export default function RootLayout({ children }: any) {
   return (
     <html>

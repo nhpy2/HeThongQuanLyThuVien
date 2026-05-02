@@ -24,8 +24,37 @@ export default function LoginPage() {
 
       if (!res.ok) throw new Error(data.message || "Login failed");
 
+      //Lưu token
       localStorage.setItem("token", data.accessToken);
-      router.push("/profile");
+
+      //GỌI PROFILE ĐỂ LẤY ROLE
+      const profileRes = await fetch(`${API_URL}/auth/profile`, {
+        headers: {
+          Authorization: `Bearer ${data.accessToken}`,
+        },
+      });
+
+      if (!profileRes.ok) {
+        throw new Error("Token không hợp lệ");
+      }
+
+      const profile = await profileRes.json();
+
+      //FIX crash undefined
+      if (!profile?.role) {
+        throw new Error("Không lấy được role");
+      }
+
+      // normalize ROLE_ADMIN → ADMIN
+      const role = profile.role.replace("ROLE_", "");
+
+      //ĐIỀU HƯỚNG
+      if (role === "ADMIN") {
+        router.push("/admin/dashboard");
+      } else {
+        router.push("/profile");
+      }
+
     } catch (e: any) {
       setError(e.message);
     }
@@ -53,20 +82,23 @@ export default function LoginPage() {
 
         <button
           onClick={handleLogin}
-          className="bg-blue-500 text-white w-full p-2 mt-2 rounded">
+          className="bg-blue-500 text-white w-full p-2 mt-2 rounded"
+        >
           Login
         </button>
 
         <div className="flex justify-between mt-3 text-sm">
           <span
             className="text-blue-500 cursor-pointer"
-            onClick={() => router.push("/register")}>
+            onClick={() => router.push("/register")}
+          >
             Register
           </span>
 
           <span
             className="text-blue-500 cursor-pointer"
-            onClick={() => router.push("/forgot-password")}>
+            onClick={() => router.push("/forgot-pass")}
+          >
             Forgot password?
           </span>
         </div>

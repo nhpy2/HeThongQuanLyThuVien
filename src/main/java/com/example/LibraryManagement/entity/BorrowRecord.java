@@ -13,7 +13,8 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 public class BorrowRecord {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -22,11 +23,13 @@ public class BorrowRecord {
 
     @ManyToOne
     private User user;
-
     private LocalDateTime borrowDate;
     private LocalDateTime dueDate;
     private LocalDateTime returnDate; // Null nếu chưa trả
-    private BigDecimal fineAmount = BigDecimal.ZERO;
+    private BigDecimal fineAmount;
+    private boolean paid;
+    
+    
     public Long getId() {
         return id;
     }
@@ -68,7 +71,14 @@ public class BorrowRecord {
         return fineAmount;
     }
 
-    public void setFineAmount(BigDecimal fineAmount) {
-        this.fineAmount = fineAmount;
+    public void setFineAmount(BigDecimal fine) {
+        this.fineAmount = fine;
+    }
+
+    public boolean isPaid() {
+        return paid;
+    }
+    public void setPaid(boolean paid) {
+        this.paid = paid;
     }
 }

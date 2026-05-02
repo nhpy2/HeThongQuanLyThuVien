@@ -1,60 +1,26 @@
-export const API_URL = "http://localhost:8090/api";
+import axios from "axios";
 
-export async function login(data: any) {
-  const res = await fetch(`${API_URL}/auth/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data), //dùng data thật
-  });
+const api = axios.create({
+  baseURL: "http://localhost:8090/api",
+});
 
-  if (!res.ok) {
-    const errorText = await res.text();
-    throw new Error(errorText);
+//TỰ ĐỘNG GẮN TOKEN
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
 
-  return res.json();
-}
+  return config;
+});
 
-export async function register(data: any) {
-  const res = await fetch(`${API_URL}/auth/register`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
-
-  if (!res.ok) {
-    const errorText = await res.text();
-    console.error("Error response:", errorText);
-    throw new Error(`Register failed: ${res.status} - ${errorText}`);
+//HANDLE ERROR GỌN GÀNG
+api.interceptors.response.use(
+  (res) => res,
+  (err) => {
+    return Promise.reject(err.response?.data || err);
   }
+);
 
-  const json = await res.json();
-  return json;
-}
-
-export async function changePassword(data: any, token: string) {
-  const res = await fetch(`${API_URL}/auth/reset-pass`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(data),
-  });
-
-  return res.text();
-}
-
-export async function forgotPassword(data: any) {
-  const res = await fetch(`${API_URL}/auth/forgot-pass`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
-
-  return res.text();
-}
+export default api;
