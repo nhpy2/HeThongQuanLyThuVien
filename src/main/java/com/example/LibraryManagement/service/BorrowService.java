@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.LibraryManagement.dto.BorrowRecordDTO;
-import com.example.LibraryManagement.entity.Book;
 import com.example.LibraryManagement.entity.BookCopy;
 import com.example.LibraryManagement.entity.BookStatus;
 import com.example.LibraryManagement.entity.BorrowRecord;
